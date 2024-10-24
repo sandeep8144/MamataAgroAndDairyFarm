@@ -1,0 +1,21 @@
+@charset "ISO-8859-1";
+
+.card-sh {
+	box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3);
+}
+
+.cat-div {
+	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 1);
+}
+
+.pink {
+	background-color: #ff4081;
+}
+
+.font-color {
+	color: #ff4081;
+}
+
+body::-webkit-scrollbar {
+	display: none;
+}
