@@ -189,9 +189,5 @@ public class HomeController {
 		}
 
 	}
-	@GetMapping("/sandeep")
-	public String name() {
-		return "sandeep";
-	}
 
 }
