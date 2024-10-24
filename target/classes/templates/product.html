@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{base::Layout(~{::section})}">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<section>
+		<div class="container card-sh"
+			style="margin-top: 10rem !important; margin-bottom: 105px">
+
+			<div class="col-md-12 p-5">
+				<div class="row">
+
+					<th:block th:if="${session.succMsg}">
+						<p class="text-success fw-bold alert alert-success text-center">[[${session.succMsg}]]</p>
+						<th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+					</th:block>
+
+					<th:block th:if="${session.errorMsg}">
+						<p class="text-danger fw-bold alert alert-danger text-center">[[${session.errorMsg}]]</p>
+						<th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+					</th:block>
+
+					<div class="col-md-6 text-end">
+						<img alt="" th:src="@{'/img/product_img/' + ${p.image}}"
+							width="330px" height="300px">
+					</div>
+
+
+					<!-- <div aria-live="polite" aria-atomic="true"
+						class="position-relative">
+						<div class="toast-container position-absolute top-0 end-0 p-3">
+							<div class="toast" role="alert" aria-live="assertive"
+								aria-atomic="true">
+								<div class="toast-header">
+									<img src="..." class="rounded me-2" alt="..."> <strong
+										class="me-auto">Bootstrap</strong> <small class="text-muted">just
+										now</small>
+									<button type="button" class="btn-close" data-bs-dismiss="toast"
+										aria-label="Close"></button>
+								</div>
+								<div class="toast-body">See? Just like this.</div>
+							</div>
+						</div>
+					</div> -->
+
+					<div class="col-md-6">
+						<p class="fs-3">[[${p.title}]]</p>
+						<p>
+							<span class="fw-bold">Description :</span><br>[[${p.description}]]
+						</p>
+						<p>
+							<span class="fw-bold">Product Details:</span><br> Status:
+							<th:block th:if="${p.stock>0}">
+								<span class="badge bg-success">Available</span>
+							</th:block>
+							<th:block th:unless="${p.stock>0}">
+								<span class="badge bg-warning">Out of Stock</span>
+							</th:block>
+							<br>Category : [[${p.category}]] <br> policy : 2 Days
+							Replacement & Return
+						</p>
+						<p class="fs-5 fw-bold">
+							Price :&nbsp; &nbsp;<i class="fas fa-rupee-sign"></i>
+							[[${p.discountPrice}]] <span
+								class="fs-6 text-decoration-line-through text-secondary">[[${p.price}]]</span>
+							<span class="fs-6 text-success">[[${p.discount}]]% off</span>
+						</p>
+
+						<div class="row">
+							<div class="col-md-4 text-danger text-center p-2">
+								<i class="fas fa-money-bill-wave fa-2x"></i>
+								<p>Cash On Delivery</p>
+							</div>
+							<div class="col-md-4 text-danger text-center p-2">
+								<i class="fas fa-undo-alt fa-2x"></i>
+								<p>Return Available</p>
+							</div>
+							<div class="col-md-4 text-danger text-center p-2">
+								<i class="fas fa-truck-moving fa-2x"></i>
+								<p>Free Shipping</p>
+							</div>
+						</div>
+						<th:block th:if="${p.stock>0}">
+							<th:block th:if="${user==null}">
+								<a href="/signin" class="btn col-md-12 pink">Add To Cart</a>
+							</th:block>
+
+							<th:block th:unless="${user==null}">
+								<a th:href="@{'/user/addCart?pid='+${p.id}+'&uid='+${user.id}}"
+									class="btn col-md-12 pink">Add To Cart</a>
+							</th:block>
+
+						</th:block>
+						<th:block th:unless="${p.stock>0}">
+							<a href="#" class="btn btn-warning col-md-12">Out Of Stock</a>
+						</th:block>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>
