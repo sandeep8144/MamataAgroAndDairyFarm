@@ -10,7 +10,7 @@
 		<div class="container-fluid mt-5 p-5" style="margin-top: 7rem !important;">
 			<div class="card card-sh">
 				<div class="card-header text-center">
-					<p class="fs-4">Users</p>
+					<p class="fs-4" style="font-weight: bold;">Users</p>
 					<th:block th:if="${session.succMsg}">
 						<p class="text-success fw-bold">[[${session.succMsg}]]</p>
 						<th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>

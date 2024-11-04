@@ -112,7 +112,7 @@ public class HomeController {
 
 	@PostMapping("/saveUser")
 	public String saveUser(@ModelAttribute UserDtls user, @RequestParam("img") MultipartFile file, HttpSession session)
-			throws IOException {
+			throws IOException, MessagingException {
 		String imageName = file.isEmpty() ? "default.jpg" : file.getOriginalFilename();
 		user.setImage(imageName);
 		UserDtls saveUser = userService.saveUser(user);
@@ -123,6 +123,7 @@ public class HomeController {
 						+ file.getOriginalFilename());
 				Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 			}
+			commonUtil.sendRegistrationSuccessEmail(user.getEmail(), user.getName());
 			session.setAttribute("sussMsg", "User Created Successfully");
 		} else {
 			session.setAttribute("errorMsg", "Something Wrong! internal Server Error");

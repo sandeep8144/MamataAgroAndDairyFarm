@@ -12,7 +12,7 @@
 				<div class="col-md-7 offset-md-2">
 					<div class="card card-sh">
 						<div class="card-header text-center fs-4">
-							<p class="fs-4">Edit Product</p>
+							<p class="fs-4" style="font-weight: bold;">Edit Product</p>
 							<th:block th:if="${session.succMsg}">
 								<p class="text-success fw-bold">[[${session.succMsg}]]</p>
 								<th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>

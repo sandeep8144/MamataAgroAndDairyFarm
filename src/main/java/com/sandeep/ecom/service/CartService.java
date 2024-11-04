@@ -16,5 +16,7 @@ public interface CartService {
 	public Integer getCountCart(Integer userId);
 
 	public void updateCartQuantity(String sy, Integer cid);
+	
+	public void clearCart(Integer userId);
 
 }

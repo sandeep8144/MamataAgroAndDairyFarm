@@ -10,12 +10,12 @@
 		<div class="container mt-1 p-5" style="margin-top: 3rem !important;">
 			<div class="row">
 				<div class="col-md-6 mt-2 p-5">
-					<img src="img/logo.jpg" width="100%" height="400px">
+					<img src="img/sss(1).jpg" width="100%" height="400px">
 				</div>
 				<div class="col-md-6 mt-1 p-5">
 					<div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
 						<div class="card-header">
-							<p class="fs-4 text-center">Register</p>
+							<p class="fs-4 text-center" style="font-weight: bold;">Register</p>
 							<th:block th:if="${session.succMsg}">
 								<p class="text-success fw-bold">[[${session.succMsg}]]</p>
 								<th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>

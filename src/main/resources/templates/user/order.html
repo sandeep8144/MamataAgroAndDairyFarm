@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{base::Layout(~{::section})}">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<section>
+		<div class="container mt-2 p-5" style="margin-top: 6rem !important;">
+		<form action="/user/save-orders" method="POST">
+			<div class="row">
+				
+					<div class="col-md-6 mt-2 p-3">
+
+						<div class="mb-4 row">
+							<p class="text-center fs-2" style="font-weight: bold;">Fill
+								Details</p>
+
+							<div class="col p1">
+								<label>First Name</label> <input type="text" name="firstName"
+									class="form-control mt-1">
+							</div>
+							<div class="col p1">
+								<label>Last Name</label> <input type="text" name="lastName"
+									class="form-control mt-1">
+							</div>
+						</div>
+
+						<div class="mb-4 row">
+							<div class="col p1">
+								<label>Email</label><input type="email" name="Email"
+									class="form-control mt-1">
+							</div>
+							<div class="col p1">
+								<label>Mobile Number</label><input type="text" name="mobileNo"
+									class="form-control mt-1">
+							</div>
+
+						</div>
+
+
+						<div class="mb-4 row">
+							<div class="col p1">
+								<label>Address</label><input type="text" name="address"
+									class="form-control mt-1">
+							</div>
+							<div class="col p1">
+								<label>City</label><input type="text" name="city"
+									class="form-control mt-1">
+							</div>
+
+						</div>
+
+						<div class="mb-4 row">
+							<div class="col p1">
+								<label>State</label><input type="text" name="state"
+									class="form-control mt-1">
+							</div>
+							<div class="col p1">
+								<label>Pin Code</label><input type="number" name="pinCode"
+									class="form-control mt-1">
+							</div>
+
+						</div>
+
+						<!-- </form> -->
+					</div>
+
+
+					<div class="col-md-6 mt-2 p-3">
+						<p class="text-center fs-2" style="font-weight: bold;">Payment
+							Options</p>
+						<div class="card">
+							<div class="card-body">
+								<table class="table table-borderless">
+									<tbody>
+										<tr>
+											<td>price</td>
+											<td>:</td>
+											<td>&#8377; [[${totalProductPrice}]]</td>
+										</tr>
+										<tr>
+											<td>Delivery fee</td>
+											<td>:</td>
+											<td>&#8377; [[${deliveryFee}]]</td>
+										</tr>
+										<tr>
+											<td>Tax</td>
+											<td>:</td>
+											<td>&#8377; [[${taxAmount}]]</td>
+										</tr>
+										<tr class="border-top">
+											<td>Total Price</td>
+											<td>:</td>
+											<td>&#8377; [[${totalOrderPrice}]]</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+						<!-- <div class="mb-3">
+									<label class="form-label">Select Payment Type</label> 
+									<select>
+									<option>--select--</option>
+									<option>Cash On Delivery</option>
+									<option>Online Payment</option>
+									</select>
+								</div>
+
+								<button style="background-color: #ff4081;" type="submit"
+									class="btn text-white col-md-12">Place Order</button> -->
+						<div class="card shadow p-3 mb-5 mt-2 bg-body-teritory rounded">
+							<div class="card-body">
+								<!-- <form> -->
+								<div class="mb-3">
+									<label class="form-label">Select Payment Type</label>
+
+									<!-- UPI Radio Button -->
+									<div class="form-check">
+										<input class="form-check-input" type="radio"
+											name="paymentType" id="upiPayment" value="UPI"
+											onclick="togglePaymentFields('upi');"> <label
+											class="form-check-label" for="upiPayment">UPI</label>
+									</div>
+
+
+
+									<!-- UPI payment fields (initially hidden) -->
+									<div id="upiPaymentFields" style="display: none;">
+										<h4>Select UPI Method</h4>
+										<div class="form-check" style="margin-left: 2rem">
+											<input class="form-check-input" type="radio" name="upiMethod"
+												id="phonepe" value="PhonePe"
+												onclick="toggleProceedButton('phonepe');"> <label
+												class="form-check-label" for="phonepe">PhonePe</label>
+											<div id="phonepeProceed" style="display: none;">
+												<button type="button" class="btn btn-primary"
+													onclick="proceedPhonePe()">Proceed</button>
+											</div>
+										</div>
+
+										<div class="form-check" style="margin-left: 2rem">
+											<input class="form-check-input" type="radio" name="upiMethod"
+												id="googlepay" value="Google Pay"
+												onclick="toggleProceedButton('googlepay');"> <label
+												class="form-check-label" for="googlepay">Google Pay</label>
+											<div id="googlepayProceed" style="display: none;">
+												<button type="button" class="btn btn-primary"
+													onclick="proceedGooglePay()">Proceed</button>
+											</div>
+										</div>
+
+										<div class="form-check" style="margin-left: 2rem">
+											<input class="form-check-input" type="radio" name="upiMethod"
+												id="payViaUpi" value="UPI"
+												onclick="toggleProceedButton('payViaUpi');"> <label
+												class="form-check-label" for="payViaUpi">Pay via UPI</label>
+										</div>
+
+										<!-- UPI ID input field and buttons (initially hidden) -->
+										<div id="upiDetails" style="display: none;">
+											<h4>Enter UPI Details</h4>
+											<div class="mb-3 position-relative">
+												<label for="upiId" class="form-label">UPI ID</label> <input
+													type="text" class="form-control" id="upiId" name="upiId"
+													placeholder="Enter your UPI ID" > <a
+													href="javascript:void(0);"
+													class="btn btn-secondary position-absolute end-0 top-0 mt-2 me-2"
+													onclick="verifyUPI()">Verify</a> <span
+													id="verificationMessage"
+													style="color: green; display: block;"></span>
+												<!-- Verification message -->
+											</div>
+											<button type="button" class="btn pink col-md-12"
+												onclick="payWithUPI()" style="display: none;" id="payButton">Pay</button>
+										</div>
+
+									</div>
+
+									<div class="form-check">
+										<input class="form-check-input" type="radio"
+											name="paymentType" id="creditDebitAtmCard"
+											value="Credit/Debit/ATM Card"
+											onclick="togglePaymentFields('card');"> <label
+											class="form-check-label" for="creditDebitAtmCard">Credit/Debit/ATM
+											Card</label>
+									</div>
+
+									<!-- Card payment fields (initially hidden) -->
+									<div id="cardPaymentFields" style="display: none;">
+										<h4>Enter Card Details</h4>
+										<div class="mb-3">
+											<label for="cardNumber" class="form-label">Card
+												Number</label> <input type="text" class="form-control"
+												id="cardNumber" maxlength="16"
+												placeholder="16-digit Card Number" >
+										</div>
+										<div class="mb-3">
+											<label for="validThru" class="form-label">Valid Thru</label>
+											<div class="row">
+												<div class="col">
+													<select class="form-select" id="expiryMonth" >
+														<option value="" disabled selected>Month</option>
+														<!-- Populate month options -->
+														<script>
+															for (let month = 1; month <= 12; month++) {
+																document
+																		.write(`<option value="${month}">${month}</option>`);
+															}
+														</script>
+													</select>
+												</div>
+												<div class="col">
+													<select class="form-select" id="expiryYear" >
+														<option value="" disabled selected>Year</option>
+														<!-- Populate year options -->
+														<script>
+															const currentYear = new Date()
+																	.getFullYear();
+															for (let year = currentYear; year <= currentYear + 10; year++) {
+																document
+																		.write(`<option value="${year}">${year}</option>`);
+															}
+														</script>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="mb-3">
+											<label for="cvv" class="form-label">CVV</label> <input
+												type="text" class="form-control" id="cvv" maxlength="3"
+												placeholder="CVV" >
+										</div>
+										<button type="button" class="btn pink col-md-12"
+											onclick="pay()">Pay</button>
+									</div>
+
+
+
+									<!-- Net Banking Radio Button -->
+									<div class="form-check">
+										<input class="form-check-input" type="radio"
+											name="paymentType" id="netBanking" value="Net Banking"
+											onclick="togglePaymentFields('netBanking');"> <label
+											class="form-check-label" for="netBanking">Net Banking</label>
+									</div>
+
+									<!-- Popular Banks Section -->
+									<div id="popularBanks" class="mt-3" style="display: none;">
+										<label class="form-label">Popular Banks:</label>
+										<div id="popularBanksList" class="form-check">
+											<input class="form-check-input" type="radio"
+												name="popularBank" id="sbiBank" value="SBI"
+												onclick="selectPopularBank();"> <label
+												class="form-check-label" for="sbiBank">SBI</label><br>
+											<input class="form-check-input" type="radio"
+												name="popularBank" id="hdfcBank" value="HDFC"
+												onclick="selectPopularBank();"> <label
+												class="form-check-label" for="hdfcBank">HDFC</label><br>
+
+											<input class="form-check-input" type="radio"
+												name="popularBank" id="iciciBank" value="ICICI"
+												onclick="selectPopularBank();"> <label
+												class="form-check-label" for="iciciBank">ICICI</label><br>
+
+											<input class="form-check-input" type="radio"
+												name="popularBank" id="ucoBank" value="UCO"
+												onclick="selectPopularBank();"> <label
+												class="form-check-label" for="ucoBank">UCO</label>
+										</div>
+									</div>
+
+									<!-- Other Banks Dropdown -->
+									<div id="otherBanks" class="mt-3" style="display: none;">
+										<label for="bankDropdown" class="form-label">Select
+											Other Bank:</label> <select id="bankDropdown" class="form-select"
+											onchange="selectDropdownBank();">
+											<option value="" selected>Select a Bank</option>
+											<option value="Axis Bank">Axis Bank</option>
+											<option value="Yes Bank">Yes Bank</option>
+											<option value="Kotak Mahindra">Kotak Mahindra</option>
+											<option value="Punjab National Bank">Punjab National
+												Bank</option>
+											<option value="Bank of Baroda">Bank of Baroda</option>
+										</select>
+									</div>
+
+									<!-- Pay Button (Initially Hidden) -->
+									<button id="payButton" class="btn btn-success mt-3"
+										style="display: none;">Pay</button>
+
+									<!-- Cash On Delivery Radio Button -->
+									<div class="form-check">
+										<input class="form-check-input" type="radio"
+											name="paymentType" id="cod" value="COD"
+											onclick="togglePaymentFields('cod');"> <label
+											class="form-check-label" for="cod">Cash On Delivery</label>
+									</div>
+								</div>
+
+
+								<!-- Submit Button -->
+								<button style="background-color: #ff4081;" type="submit"
+									class="btn text-white col-md-12">Place Order</button>
+								<!-- </form> -->
+							</div>
+
+
+
+
+
+							<!-- JavaScript to Show/Hide UPI Options -->
+							<script>
+								function togglePaymentFields(type) {
+									// Hide all payment fields
+									document
+											.getElementById('cardPaymentFields').style.display = 'none';
+									document.getElementById('upiPaymentFields').style.display = 'none';
+									document.getElementById('popularBanks').style.display = 'none';
+									document.getElementById('otherBanks').style.display = 'none';
+									document.getElementById('payButton').style.display = 'none';
+
+									// Show specific payment fields based on the selected type
+									if (type === 'upi') {
+										document
+												.getElementById('upiPaymentFields').style.display = 'block';
+										document.getElementById('payButton').style.display = 'none'; // Hide Pay button initially
+									} else if (type === 'card') {
+										document
+												.getElementById('cardPaymentFields').style.display = 'block';
+										document.getElementById('payButton').style.display = 'none'; // Hide Pay button initially
+									} else if (type === 'netBanking') {
+										document.getElementById('popularBanks').style.display = 'block';
+										document.getElementById('otherBanks').style.display = 'block'; // Show both sections
+									} else if (type === 'cod') {
+										document.getElementById('payButton').style.display = 'block'; // Show Pay button
+									}
+								}
+
+								function toggleProceedButton(selectedMethod) {
+									// Hide all proceed buttons and reset state
+									document.getElementById('phonepeProceed').style.display = 'none';
+									document.getElementById('googlepayProceed').style.display = 'none';
+									document.getElementById('upiDetails').style.display = 'none';
+									document.getElementById('payButton').style.display = 'none';
+
+									// Show the appropriate proceed button or UPI details
+									if (selectedMethod === 'phonepe') {
+										document
+												.getElementById('phonepeProceed').style.display = 'block';
+									} else if (selectedMethod === 'googlepay') {
+										document
+												.getElementById('googlepayProceed').style.display = 'block';
+									} else if (selectedMethod === 'payViaUpi') {
+										document.getElementById('upiDetails').style.display = 'block';
+									}
+								}
+
+								function pay() {
+									// Implement the payment logic for card
+									alert("Payment initiated with card details.");
+								}
+
+								function proceedPhonePe() {
+									alert("Proceeding with PhonePe payment.");
+									// Further logic for PhonePe payment can be added here
+								}
+
+								function proceedGooglePay() {
+									alert("Proceeding with Google Pay payment.");
+									// Further logic for Google Pay payment can be added here
+								}
+
+								function verifyUPI() {
+									// Logic to verify UPI ID (mock verification for this example)
+									const upiId = document
+											.getElementById('upiId').value;
+									document
+											.getElementById('verificationMessage').textContent = "UPI ID "
+											+ upiId + " verified successfully!";
+									document
+											.getElementById('verificationMessage').style.display = 'block'; // Show verification message
+									document.getElementById('payButton').style.display = 'block'; // Show Pay button after verification
+								}
+
+								function payWithUPI() {
+									alert("Payment initiated with UPI ID: "
+											+ document.getElementById('upiId').value);
+								}
+
+								function toggleNetBankingOptions(show) {
+									document.getElementById("popularBanks").style.display = show ? "block"
+											: "none";
+									document.getElementById("otherBanks").style.display = show ? "block"
+											: "none";
+									document.getElementById("payButton").style.display = "none"; // Keep Pay button hidden initially
+								}
+
+								// Function to handle popular bank selection
+								function selectPopularBank() {
+									// Reset the dropdown when a popular bank is selected
+									document.getElementById("bankDropdown").value = ""; // Reset dropdown selection
+
+									// Show Pay button if a popular bank is selected
+									const selectedPopularBank = document
+											.querySelector('input[name="popularBank"]:checked');
+									if (selectedPopularBank) {
+										document.getElementById("payButton").style.display = "inline-block";
+									} else {
+										document.getElementById("payButton").style.display = "none";
+									}
+								}
+
+								// Function to handle dropdown bank selection
+								function selectDropdownBank() {
+									// Uncheck any selected popular bank
+									const selectedPopularBank = document
+											.querySelector('input[name="popularBank"]:checked');
+									if (selectedPopularBank) {
+										selectedPopularBank.checked = false; // Uncheck the radio button
+									}
+
+									// Show Pay button if a valid dropdown selection is made
+									const dropdownValue = document
+											.getElementById("bankDropdown").value;
+									if (dropdownValue) {
+										document.getElementById("payButton").style.display = "inline-block";
+									} else {
+										document.getElementById("payButton").style.display = "none";
+									}
+								}
+							</script>
+
+
+
+
+
+
+						</div>
+					</div>
+				
+			</div>
+			</form>
+		</div>
+	</section>
+</body>
+</html>

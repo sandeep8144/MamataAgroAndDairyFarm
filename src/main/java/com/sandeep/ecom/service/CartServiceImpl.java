@@ -14,6 +14,8 @@ import com.sandeep.ecom.repository.CartRepository;
 import com.sandeep.ecom.repository.ProductRepository;
 import com.sandeep.ecom.repository.UserRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class CartServiceImpl implements CartService {
 
@@ -101,6 +103,11 @@ public class CartServiceImpl implements CartService {
 			cartRepo.save(cart);
 		}
 		
+	}
+	
+	@Transactional
+	public void clearCart(Integer userId) {
+	    cartRepo.deleteByUserId(userId);
 	}
 
 }
